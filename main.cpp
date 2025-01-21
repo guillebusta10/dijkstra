@@ -6,7 +6,7 @@ class Nodo{
     public:
         char letra;
         int distancia;
-        vector<Nodo*> hijos;
+        vector<Nodo*> hijos; //vector de posibles nodos hijos 
     Nodo(char _letra, int _distancia){
         letra=_letra;
         distancia=_distancia;
@@ -17,11 +17,11 @@ vector<vector<int>> leerTxT(string Archivo, int& cantidadnodos){
     ifstream file(Archivo);
     file>>cantidadnodos;
 
-    vector<vector<int>>matriz(cantidadnodos,vector<int>(cantidadnodos));
-    for(int i=0;i<cantidadnodos;i++){
+    vector<vector<int>>matriz(cantidadnodos,vector<int>(cantidadnodos));//se crea la matriz (grafo) que vamos a retornar
+    for(int i=0;i<cantidadnodos;i++){//leemos la matriz de adyacencia
         for(int j=0;j<cantidadnodos;j++){
             file>>matriz[i][j];
-            if(file.peek()==','){
+            if(file.peek()==','){// condicion para ignorar la "coma"
                 file.ignore();
             }
         }
@@ -41,28 +41,35 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
     vector<bool> visitados(n,false);
     vector<int> padres(n,-1);
     distanciasNodos[inicio]=0;
+
+
     for(int i=0; i<n-1;i++){
-        int NOvisitado=-1;//indice para verificar los nodos que no se puede acceder
+        int NOvisitado=-1;//indice para verificar los nodos aun no visitados que no se puedan acceder
         int distanciaMin=9999;
         for(int j=0;j<n;j++){
-            if(!visitado[j] && distanciasNodos[j]<distanciaMin){
-                distanciaMin=distanciasNodos[j];
+            if(!visitados[j] && distanciasNodos[j]<distanciaMin){//si no esta visitado y es una distancia menor, es true
+                distanciaMin=distanciasNodos[j];//ingreso las menores distancias a la variable "distanciaMin" 
                 NOvisitado=j;
             }
         }
+
+
         if(NOvisitado==-1){
             break;// nodos que no se pueden acceder
         }
-        visitado[NOvisitado]=true;
+        visitados[NOvisitado]=true;
 
         for(int z=0;z<n;z++){
-            if(!visitado[z] && grafo[NOvisitado][z] && distanciasNodos[NOvisitado]!=9999 && grafo[NOvisitado][z]+distanciasNodos[NOvisitado]<distanciasNodos[z]){
+            if(!visitados[z] && grafo[NOvisitado][z] && distanciasNodos[NOvisitado]!=9999 && grafo[NOvisitado][z]+distanciasNodos[NOvisitado]<distanciasNodos[z]){
                 distanciasNodos[z]=grafo[NOvisitado][z]+distanciasNodos[NOvisitado];
                 padres[z]=NOvisitado;
             }
         }
     }
     
+    cout<<"distancia mas corta: "<<distanciasNodos[destino]<<endl;
+    
+
 
 }
 int main(){
@@ -77,6 +84,7 @@ int main(){
         
         cout<<nodos[i]<<" , ";// imprimimos los disponibles
     }
+    cout<<endl;
     char destino;
     cout<<"Ingrese el nodo destino: "<<endl;
     cin>>destino;
