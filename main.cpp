@@ -6,7 +6,7 @@ class Nodo{
     public:
         char letra;
         int distancia;
-        vector<Nodo*> hijos; //vector de posibles nodos hijos 
+        vector<Nodo*> Phijos; //vector de posibles nodos hijos 
     Nodo(char _letra, int _distancia){
         letra=_letra;
         distancia=_distancia;
@@ -35,16 +35,31 @@ vector<vector<int>> leerTxT(string Archivo, int& cantidadnodos){
 
 
 }
-//Nodo* creararbol(int inicio,vector<char>&nodos,vector<int>&padres){
+Nodo* creararbol(int inicio,vector<char>&nodos,vector<int>&padres, vector<int>&distancias){
+    int nodosP=padres.size();
+    vector<Nodo*> hijos(nodosP,nullptr);
+    for(int i=0;i<nodosP;i++){
+        hijos[i]=new Nodo(nodos[i],distancias[i]);
+    }
+    Nodo* raiz=hijos[inicio];
+    for(int j=0;j<nodosP;j++){
+        if(padres[j]!=-1 && j!=inicio ){
+            hijos[padres[j]]->Phijos.push_back(hijos[j]);
+        }
+    }
+    
+    return raiz;
 
-//}
+
+}
 void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector<char>&nodos){
     int n=grafo.size();
     vector<int> distanciasNodos(n,9999);
     vector<bool> visitados(n,false);
     vector<int> padres(n,-1);
+    vector<char>camino;
     distanciasNodos[inicio]=0;
-
+    bool encontrado=false;
 
     for(int i=0; i<n-1;i++){
         int NOvisitado=-1;//indice para verificar los nodos aun no visitados que no se puedan acceder
@@ -72,8 +87,9 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
     
     cout<<"distancia mas corta: "<<distanciasNodos[destino]<<endl;
 
-  //  Nodo* arbol=creararbol(inicio,nodos,padres);
-
+    Nodo* arbol=creararbol(inicio,nodos,padres,distanciasNodos);
+    recorrercamino();
+    
 
 }
 int main(){
