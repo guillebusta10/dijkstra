@@ -35,6 +35,9 @@ vector<vector<int>> leerTxT(string Archivo, int& cantidadnodos){
 
 
 }
+//Nodo* creararbol(int inicio,vector<char>&nodos,vector<int>&padres){
+
+//}
 void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector<char>&nodos){
     int n=grafo.size();
     vector<int> distanciasNodos(n,9999);
@@ -68,7 +71,8 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
     }
     
     cout<<"distancia mas corta: "<<distanciasNodos[destino]<<endl;
-    
+
+  //  Nodo* arbol=creararbol(inicio,nodos,padres);
 
 
 }
@@ -86,10 +90,27 @@ int main(){
     }
     cout<<endl;
     char destino;
+    int indiceDestino;
     cout<<"Ingrese el nodo destino: "<<endl;
     cin>>destino;
-    int indiceDestino=destino-'A';//obtenemos el "inidice del nodo"
+    
+    while(true){
+        indiceDestino=destino-'A';//obtenemos el "inidice del nodo"
+    
+        
+        if(indiceDestino<0 || indiceDestino>=cantidadnodos){
+            cout<<"nodo ingresado incorrectamente "<<endl;
+            cout<<"Ingrese el nodo destino nuevamente: "<<endl;
+            cin>>destino;
+
+        }else{
+            break;
+        }
+            
+    }
+    
     Algoritmodijkstra(grafo,0,indiceDestino,nodos);
+
 
 
     return 0;
