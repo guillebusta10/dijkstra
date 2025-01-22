@@ -52,6 +52,23 @@ Nodo* creararbol(int inicio,vector<char>&nodos,vector<int>&padres, vector<int>&d
 
 
 }
+void recorrercamino(Nodo* arbol, bool& encontrado, vector<char>&camino, char destino){
+    if(arbol==nullptr || encontrado){
+        return;
+    }
+    camino.push_back(arbol->letra);
+    if(arbol->letra == destino){
+        encontrado=true;
+        return;
+    }
+    for(Nodo* hijo:arbol->Phijos){
+        recorrercamino(hijo,encontrado,camino,destino);
+        if(encontrado){
+            return;
+        }
+    }
+    camino.pop_back();
+}
 void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector<char>&nodos){
     int n=grafo.size();
     vector<int> distanciasNodos(n,9999);
@@ -88,8 +105,14 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
     cout<<"distancia mas corta: "<<distanciasNodos[destino]<<endl;
 
     Nodo* arbol=creararbol(inicio,nodos,padres,distanciasNodos);
-    recorrercamino();
-    
+    recorrercamino(arbol,encontrado,camino,nodos[destino]);
+    for(int i=0;i<camino.size();i++){
+        cout<<camino[i];
+        if(i<camino.size()-1){
+            cout<<"->";
+        }
+    }
+    cout<<endl;
 
 }
 int main(){
@@ -102,7 +125,10 @@ int main(){
     for(int i=0;i<cantidadnodos;i++){
         nodos[i]='A'+i; //asignamos cada caracter
         
-        cout<<nodos[i]<<" , ";// imprimimos los disponibles
+        cout<<nodos[i];// imprimimos los disponibles
+        if(i<cantidadnodos-1){
+            cout<<" , ";
+        }
     }
     cout<<endl;
     char destino;
