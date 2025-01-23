@@ -18,7 +18,7 @@ vector<vector<int>> leerTxT(string Archivo, int& cantidadnodos){
     file>>cantidadnodos;
 
     vector<vector<int>>matriz(cantidadnodos,vector<int>(cantidadnodos));//se crea la matriz (grafo) que vamos a retornar
-    for(int i=0;i<cantidadnodos;i++){//leemos la matriz de adyacencia
+    for(int i=0;i<cantidadnodos;i++){//se usa un doble for para la lectura de la matriz de adyacencia
         for(int j=0;j<cantidadnodos;j++){
             file>>matriz[i][j];
             if(file.peek()==','){// condicion para ignorar la "coma"
@@ -48,26 +48,26 @@ Nodo* creararbol(int inicio,vector<char>&nodos,vector<int>&padres, vector<int>&d
         }
     }
     
-    return raiz; // retornamos el arbol
+    return raiz; // retorna el arbol
 
 
 }
 void recorrercamino(Nodo* arbol, bool& encontrado, vector<char>&camino, char destino){
-    if(arbol==nullptr || encontrado){//si no lo hemos encontrado, o el arbol es nulo, retornamos.
+    if(arbol==nullptr || encontrado){//si no lo ha encontrado, o el arbol es nulo, retorna.
         return;
     }
-    camino.push_back(arbol->letra);//agregamos al vector camino la letra del nodo
-    if(arbol->letra == destino){//si llegamos al nodo que buscabamos, la variable "encontrado" le asignamos true.
+    camino.push_back(arbol->letra);//agrega al vector camino la letra del nodo
+    if(arbol->letra == destino){//si llega al nodo que buscaba, la variable "encontrado" le asigna true.
         encontrado=true;
         return;
     }
-    for(Nodo* hijo:arbol->Phijos){// recorremos el arbol de manera recursiva hasra llegar al destino
+    for(Nodo* hijo:arbol->Phijos){// recorre el arbol de manera recursiva hasta llegar al destino
         recorrercamino(hijo,encontrado,camino,destino);
         if(encontrado){
             return;
         }
     }
-    camino.pop_back(); // eliminamos para limpiar el vector
+    camino.pop_back(); // elimina para limpiar el vector
 }
 void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector<char>&nodos){
     int n=grafo.size();
@@ -94,7 +94,7 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
         }
         visitados[NOvisitado]=true;
 
-        for(int z=0;z<n;z++){// guardamos la distancia mas corta 
+        for(int z=0;z<n;z++){// guarda la distancia mas corta 
             if(!visitados[z] && grafo[NOvisitado][z] && distanciasNodos[NOvisitado]!=9999 && grafo[NOvisitado][z]+distanciasNodos[NOvisitado]<distanciasNodos[z]){
                 distanciasNodos[z]=grafo[NOvisitado][z]+distanciasNodos[NOvisitado];
                 padres[z]=NOvisitado;
@@ -117,15 +117,15 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
 }
 int main(){
     int cantidadnodos;
-    vector<vector<int>> grafo=leerTxT("matriz.txt",cantidadnodos);//creamos el grafo
+    vector<vector<int>> grafo=leerTxT("matriz.txt",cantidadnodos);//se crea el grafo
 
     vector<char> nodos(cantidadnodos);
     
     cout<<"Nodos disponibles: "<<endl;
     for(int i=0;i<cantidadnodos;i++){
-        nodos[i]='A'+i; //asignamos cada caracter
+        nodos[i]='A'+i; //asigna cada caracter
         
-        cout<<nodos[i];// imprimimos los disponibles
+        cout<<nodos[i];// imprime los disponibles
         if(i<cantidadnodos-1){
             cout<<" , ";
         }
@@ -137,7 +137,7 @@ int main(){
     cin>>destino;
     
     while(true){
-        indiceDestino=destino-'A';//obtenemos el "inidice del nodo"
+        indiceDestino=destino-'A';//se le asigna el "inidice del nodo"
     
         
         if(indiceDestino<0 || indiceDestino>=cantidadnodos){
