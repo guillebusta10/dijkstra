@@ -37,37 +37,37 @@ vector<vector<int>> leerTxT(string Archivo, int& cantidadnodos){
 }
 Nodo* creararbol(int inicio,vector<char>&nodos,vector<int>&padres, vector<int>&distancias){
     int nodosP=padres.size();
-    vector<Nodo*> hijos(nodosP,nullptr);
+    vector<Nodo*> hijos(nodosP,nullptr);// se crea un vector para agregar los hijos posibles 
     for(int i=0;i<nodosP;i++){
         hijos[i]=new Nodo(nodos[i],distancias[i]);
     }
     Nodo* raiz=hijos[inicio];
-    for(int j=0;j<nodosP;j++){
+    for(int j=0;j<nodosP;j++){ //agregar al vector los hijos 
         if(padres[j]!=-1 && j!=inicio ){
             hijos[padres[j]]->Phijos.push_back(hijos[j]);
         }
     }
     
-    return raiz;
+    return raiz; // retornamos el arbol
 
 
 }
 void recorrercamino(Nodo* arbol, bool& encontrado, vector<char>&camino, char destino){
-    if(arbol==nullptr || encontrado){
+    if(arbol==nullptr || encontrado){//si no lo hemos encontrado, o el arbol es nulo, retornamos.
         return;
     }
-    camino.push_back(arbol->letra);
-    if(arbol->letra == destino){
+    camino.push_back(arbol->letra);//agregamos al vector camino la letra del nodo
+    if(arbol->letra == destino){//si llegamos al nodo que buscabamos, la variable "encontrado" le asignamos true.
         encontrado=true;
         return;
     }
-    for(Nodo* hijo:arbol->Phijos){
+    for(Nodo* hijo:arbol->Phijos){// recorremos el arbol de manera recursiva hasra llegar al destino
         recorrercamino(hijo,encontrado,camino,destino);
         if(encontrado){
             return;
         }
     }
-    camino.pop_back();
+    camino.pop_back(); // eliminamos para limpiar el vector
 }
 void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector<char>&nodos){
     int n=grafo.size();
@@ -94,7 +94,7 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
         }
         visitados[NOvisitado]=true;
 
-        for(int z=0;z<n;z++){
+        for(int z=0;z<n;z++){// guardamos la distancia mas corta 
             if(!visitados[z] && grafo[NOvisitado][z] && distanciasNodos[NOvisitado]!=9999 && grafo[NOvisitado][z]+distanciasNodos[NOvisitado]<distanciasNodos[z]){
                 distanciasNodos[z]=grafo[NOvisitado][z]+distanciasNodos[NOvisitado];
                 padres[z]=NOvisitado;
@@ -106,7 +106,7 @@ void Algoritmodijkstra(vector<vector<int>>& grafo, int inicio,int destino,vector
 
     Nodo* arbol=creararbol(inicio,nodos,padres,distanciasNodos);
     recorrercamino(arbol,encontrado,camino,nodos[destino]);
-    for(int i=0;i<camino.size();i++){
+    for(int i=0;i<camino.size();i++){// se imprime por pantalla el camino mas corto
         cout<<camino[i];
         if(i<camino.size()-1){
             cout<<"->";
